@@ -1,0 +1,939 @@
+/* =========================================
+   LANGUAGE
+========================================= */
+
+let currentLanguage = localStorage.getItem("language") || "fa";
+
+function applyLanguage() {
+
+    document.documentElement.lang = currentLanguage;
+
+    document.documentElement.dir =
+        currentLanguage === "fa" ? "rtl" : "ltr";
+
+    document.body.classList.toggle(
+        "en",
+        currentLanguage === "en"
+    );
+
+    document.querySelectorAll("[data-fa]").forEach(element => {
+
+        element.textContent =
+            element.getAttribute(
+                currentLanguage === "fa"
+                    ? "data-fa"
+                    : "data-en"
+            );
+
+    });
+
+    document.querySelector(".language-button").textContent =
+        currentLanguage === "fa" ? "EN" : "FA";
+
+    localStorage.setItem("language", currentLanguage);
+}
+
+function toggleLanguage() {
+
+    currentLanguage =
+        currentLanguage === "fa" ? "en" : "fa";
+
+    applyLanguage();
+}
+
+
+/* =========================================
+   MODALS
+========================================= */
+
+function openModal(id) {
+
+    const modal = document.getElementById(id);
+
+    modal.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+    if (id === "unitModal") {
+        setupUnits();
+    }
+
+    if (id === "colorModal") {
+        updateColor();
+    }
+}
+
+function closeModal(id) {
+
+    const modal = document.getElementById(id);
+
+    modal.classList.remove("active");
+
+    document.body.style.overflow = "";
+}
+
+
+/* Click outside modal */
+
+document.querySelectorAll(".tool-modal").forEach(modal => {
+
+    modal.addEventListener("click", function(event) {
+
+        if (event.target === modal) {
+
+            modal.classList.remove("active");
+
+            document.body.style.overflow = "";
+        }
+
+    });
+
+});
+
+
+/* ESC */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+
+        document.querySelectorAll(".tool-modal.active")
+            .forEach(modal => {
+
+                modal.classList.remove("active");
+
+            });
+
+        document.body.style.overflow = "";
+    }
+
+});
+
+
+/* =========================================
+   QR CODE
+========================================= */
+
+function generateQR() {
+
+    const text =
+        document.getElementById("qrText").value.trim();
+
+    const color =
+        document.getElementById("qrColor").value;
+
+    const size =
+        Number(document.getElementById("qrSize").value);
+
+    const container =
+        document.getElementById("qrcode");
+
+    const downloadButton =
+        document.getElementById("downloadQR");
+
+    container.innerHTML = "";
+
+    if (!text) {
+
+        container.innerHTML =
+            "<span>QR Code</span>";
+
+        downloadButton.disabled = true;
+
+        return;
+    }
+
+    new QRCode(container, {
+
+        text: text,
+
+        width: size,
+
+        height: size,
+
+        colorDark: color,
+
+        colorLight: "#ffffff",
+
+        correctLevel: QRCode.CorrectLevel.H
+
+    });
+
+    downloadButton.disabled = false;
+}
+
+
+function downloadQR() {
+
+    const canvas =
+        document.querySelector("#qrcode canvas");
+
+    const image =
+        document.querySelector("#qrcode img");
+
+    const link =
+        document.createElement("a");
+
+    link.download = "toolak-qrcode.png";
+
+    if (canvas) {
+
+        link.href =
+            canvas.toDataURL("image/png");
+
+        link.click();
+
+    } else if (image) {
+
+        link.href = image.src;
+
+        link.click();
+    }
+}
+
+
+/* =========================================
+   PASSWORD GENERATOR
+========================================= */
+
+function openPasswordGenerator() {
+
+    openModal("passwordModal");
+
+    generatePassword();
+}
+
+
+function closePasswordGenerator() {
+
+    closeModal("passwordModal");
+}
+
+
+function updatePasswordLength() {
+
+    const slider =
+        document.getElementById("passwordLength");
+
+    document.getElementById("passwordLengthValue")
+        .textContent = slider.value;
+
+    generatePassword();
+}
+
+
+function randomCharacter(chars) {
+
+    const array =
+        new Uint32Array(1);
+
+    crypto.getRandomValues(array);
+
+    return chars[array[0] % chars.length];
+}
+
+
+function shuffleString(string) {
+
+    const array =
+        string.split("");
+
+    for (let i = array.length - 1; i > 0; i--) {
+
+        const random =
+            new Uint32Array(1);
+
+        crypto.getRandomValues(random);
+
+        const j =
+            random[0] % (i + 1);
+
+        [array[i], array[j]] =
+            [array[j], array[i]];
+    }
+
+    return array.join("");
+}
+
+
+function generatePassword() {
+
+    const length =
+        Number(
+            document.getElementById("passwordLength").value
+        );
+
+    const upper =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    const lower =
+        "abcdefghijklmnopqrstuvwxyz";
+
+    const numbers =
+        "0123456789";
+
+    const symbols =
+        "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+
+    const selected = [];
+
+    let all = "";
+
+
+    if (document.getElementById("includeUppercase").checked) {
+
+        selected.push(upper);
+
+        all += upper;
+    }
+
+    if (document.getElementById("includeLowercase").checked) {
+
+        selected.push(lower);
+
+        all += lower;
+    }
+
+    if (document.getElementById("includeNumbers").checked) {
+
+        selected.push(numbers);
+
+        all += numbers;
+    }
+
+    if (document.getElementById("includeSymbols").checked) {
+
+        selected.push(symbols);
+
+        all += symbols;
+    }
+
+
+    const output =
+        document.getElementById("generatedPassword");
+
+
+    if (!all) {
+
+        output.value =
+            currentLanguage === "fa"
+                ? "حداقل یک گزینه را انتخاب کنید"
+                : "Select at least one option";
+
+        return;
+    }
+
+
+    let password = "";
+
+
+    selected.forEach(set => {
+
+        password += randomCharacter(set);
+
+    });
+
+
+    while (password.length < length) {
+
+        password += randomCharacter(all);
+
+    }
+
+
+    password =
+        shuffleString(password)
+        .substring(0, length);
+
+
+    output.value = password;
+
+    updatePasswordStrength(password);
+}
+
+
+function updatePasswordStrength(password) {
+
+    const text =
+        document.getElementById("strengthText");
+
+    const progress =
+        document.getElementById("strengthProgress");
+
+
+    if (!password) {
+
+        text.textContent = "-";
+
+        progress.style.width = "0%";
+
+        return;
+    }
+
+
+    let score = 0;
+
+
+    if (password.length >= 8)
+        score++;
+
+    if (password.length >= 12)
+        score++;
+
+    if (/[A-Z]/.test(password))
+        score++;
+
+    if (/[a-z]/.test(password))
+        score++;
+
+    if (/[0-9]/.test(password))
+        score++;
+
+    if (/[^A-Za-z0-9]/.test(password))
+        score++;
+
+
+    if (score <= 2) {
+
+        progress.style.width = "30%";
+
+        text.textContent =
+            currentLanguage === "fa"
+                ? "ضعیف"
+                : "Weak";
+
+    } else if (score <= 4) {
+
+        progress.style.width = "65%";
+
+        text.textContent =
+            currentLanguage === "fa"
+                ? "متوسط"
+                : "Medium";
+
+    } else {
+
+        progress.style.width = "100%";
+
+        text.textContent =
+            currentLanguage === "fa"
+                ? "قوی"
+                : "Strong";
+    }
+}
+
+
+async function copyPassword() {
+
+    const input =
+        document.getElementById("generatedPassword");
+
+    if (!input.value)
+        return;
+
+    await navigator.clipboard.writeText(input.value);
+
+    const button =
+        document.querySelector(".copy-password");
+
+    const old =
+        button.textContent;
+
+    button.textContent = "✅";
+
+    setTimeout(() => {
+
+        button.textContent = old;
+
+    }, 1200);
+}
+
+
+[
+    "includeUppercase",
+    "includeLowercase",
+    "includeNumbers",
+    "includeSymbols"
+].forEach(id => {
+
+    document.getElementById(id)
+        .addEventListener(
+            "change",
+            generatePassword
+        );
+
+});
+
+
+/* =========================================
+   CALCULATOR
+========================================= */
+
+let calcExpression = "";
+
+
+function calcInput(value) {
+
+    if (calcExpression === "Error")
+        calcExpression = "";
+
+    calcExpression += value;
+
+    document.getElementById("calcDisplay")
+        .value = calcExpression;
+}
+
+
+function calcClear() {
+
+    calcExpression = "";
+
+    document.getElementById("calcDisplay")
+        .value = "0";
+}
+
+
+function calcDelete() {
+
+    calcExpression =
+        calcExpression.slice(0,-1);
+
+    document.getElementById("calcDisplay")
+        .value =
+        calcExpression || "0";
+}
+
+
+function calcCalculate() {
+
+    try {
+
+        let expression =
+            calcExpression.replaceAll("%","/100");
+
+        if (!/^[0-9+\-*/().\s]+$/.test(expression))
+            throw new Error();
+
+        const result =
+            Function(
+                '"use strict"; return (' +
+                expression +
+                ')'
+            )();
+
+        calcExpression =
+            String(result);
+
+        document.getElementById("calcDisplay")
+            .value = calcExpression;
+
+    } catch {
+
+        calcExpression = "Error";
+
+        document.getElementById("calcDisplay")
+            .value = "Error";
+    }
+}
+
+
+/* =========================================
+   TEXT COUNTER
+========================================= */
+
+function updateTextCounter() {
+
+    const text =
+        document.getElementById("counterText")
+            .value;
+
+    const chars =
+        text.length;
+
+    const words =
+        text.trim()
+            ? text.trim().split(/\s+/).length
+            : 0;
+
+    const lines =
+        text
+            ? text.split("\n").length
+            : 0;
+
+
+    document.getElementById("charCount")
+        .textContent = chars;
+
+    document.getElementById("wordCount")
+        .textContent = words;
+
+    document.getElementById("lineCount")
+        .textContent = lines;
+}
+
+
+/* =========================================
+   UNIT CONVERTER
+========================================= */
+
+const units = {
+
+    length: {
+
+        meter: 1,
+
+        kilometer: 1000,
+
+        centimeter: .01,
+
+        millimeter: .001,
+
+        mile: 1609.344,
+
+        foot: .3048
+
+    },
+
+    weight: {
+
+        kilogram: 1,
+
+        gram: .001,
+
+        pound: .45359237,
+
+        ounce: .0283495
+
+    },
+
+    temperature: {
+
+        celsius: "celsius",
+
+        fahrenheit: "fahrenheit",
+
+        kelvin: "kelvin"
+
+    }
+
+};
+
+
+function setupUnits() {
+
+    const type =
+        document.getElementById("unitType").value;
+
+    const from =
+        document.getElementById("unitFrom");
+
+    const to =
+        document.getElementById("unitTo");
+
+
+    const list =
+        Object.keys(units[type]);
+
+
+    from.innerHTML = "";
+
+    to.innerHTML = "";
+
+
+    list.forEach(unit => {
+
+        const option1 =
+            document.createElement("option");
+
+        const option2 =
+            document.createElement("option");
+
+        option1.value = unit;
+
+        option2.value = unit;
+
+        option1.textContent =
+            unit;
+
+        option2.textContent =
+            unit;
+
+        from.appendChild(option1);
+
+        to.appendChild(option2);
+
+    });
+
+
+    if (list.length > 1)
+        to.value = list[1];
+
+    convertUnit();
+}
+
+
+function convertUnit() {
+
+    const type =
+        document.getElementById("unitType").value;
+
+    const input =
+        Number(
+            document.getElementById("unitInput").value
+        );
+
+    const from =
+        document.getElementById("unitFrom").value;
+
+    const to =
+        document.getElementById("unitTo").value;
+
+
+    if (!from || !to)
+        return;
+
+
+    let result;
+
+
+    if (type === "temperature") {
+
+        let celsius;
+
+
+        if (from === "celsius")
+            celsius = input;
+
+        if (from === "fahrenheit")
+            celsius = (input - 32) * 5 / 9;
+
+        if (from === "kelvin")
+            celsius = input - 273.15;
+
+
+        if (to === "celsius")
+            result = celsius;
+
+        if (to === "fahrenheit")
+            result = celsius * 9 / 5 + 32;
+
+        if (to === "kelvin")
+            result = celsius + 273.15;
+
+    } else {
+
+        const base =
+            input * units[type][from];
+
+        result =
+            base / units[type][to];
+    }
+
+
+    document.getElementById("unitResult")
+        .textContent =
+        Number(result.toFixed(8));
+}
+
+
+document.getElementById("unitType")
+    .addEventListener("change", setupUnits);
+
+
+/* =========================================
+   COLOR PICKER
+========================================= */
+
+function hexToRgb(hex) {
+
+    const value =
+        hex.replace("#","");
+
+    const bigint =
+        parseInt(value,16);
+
+    return {
+
+        r: (bigint >> 16) & 255,
+
+        g: (bigint >> 8) & 255,
+
+        b: bigint & 255
+
+    };
+}
+
+
+function updateColor() {
+
+    const color =
+        document.getElementById("mainColorPicker")
+            .value;
+
+    const rgb =
+        hexToRgb(color);
+
+
+    document.getElementById("colorPreview")
+        .style.background = color;
+
+    document.getElementById("hexValue")
+        .textContent = color.toUpperCase();
+
+    document.getElementById("rgbValue")
+        .textContent =
+        `${rgb.r}, ${rgb.g}, ${rgb.b}`;
+}
+
+
+async function copyColor() {
+
+    const color =
+        document.getElementById("mainColorPicker")
+            .value;
+
+    await navigator.clipboard.writeText(color);
+
+}
+
+
+/* =========================================
+   TIMER / STOPWATCH
+========================================= */
+
+let timerSeconds = 0;
+
+let timerInterval = null;
+
+
+function formatTime(seconds) {
+
+    const hours =
+        Math.floor(seconds / 3600);
+
+    const minutes =
+        Math.floor((seconds % 3600) / 60);
+
+    const secs =
+        seconds % 60;
+
+
+    return [
+
+        hours,
+        minutes,
+        secs
+
+    ]
+    .map(value =>
+        String(value).padStart(2,"0")
+    )
+    .join(":");
+}
+
+
+function updateTimerDisplay() {
+
+    document.getElementById("timerDisplay")
+        .textContent =
+        formatTime(timerSeconds);
+}
+
+
+function startTimer() {
+
+    if (timerInterval)
+        return;
+
+
+    timerInterval =
+        setInterval(() => {
+
+            timerSeconds++;
+
+            updateTimerDisplay();
+
+        },1000);
+}
+
+
+function stopTimer() {
+
+    clearInterval(timerInterval);
+
+    timerInterval = null;
+}
+
+
+function resetTimer() {
+
+    stopTimer();
+
+    timerSeconds = 0;
+
+    updateTimerDisplay();
+}
+
+
+/* =========================================
+   TEXT TOOLS
+========================================= */
+
+function getTextTools() {
+
+    return document.getElementById("textToolsInput");
+}
+
+
+function textUpper() {
+
+    getTextTools().value =
+        getTextTools().value.toUpperCase();
+}
+
+
+function textLower() {
+
+    getTextTools().value =
+        getTextTools().value.toLowerCase();
+}
+
+
+function textClean() {
+
+    getTextTools().value =
+        getTextTools().value
+            .replace(/\s+/g," ")
+            .trim();
+}
+
+
+function textReverse() {
+
+    getTextTools().value =
+        [...getTextTools().value]
+            .reverse()
+            .join("");
+}
+
+
+async function copyTextTools() {
+
+    await navigator.clipboard.writeText(
+        getTextTools().value
+    );
+}
+
+
+/* =========================================
+   STARTUP
+========================================= */
+
+applyLanguage();
+
+setupUnits();
+
+updateTimerDisplay();
+
+updateColor();
