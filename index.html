@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ابزارک | ابزارهای کاربردی آنلاین</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        <span>ابزارک</span>
+    </div>
+
+    <nav>
+        <a href="#tools" data-fa="ابزارها" data-en="Tools">ابزارها</a>
+        <a href="#about" data-fa="درباره ما" data-en="About">درباره ما</a>
+    </nav>
+
+    <button class="language-button" onclick="toggleLanguage()">
+        EN
+    </button>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge"
+             data-fa="⚡ ابزارهای سریع و رایگان"
+             data-en="⚡ Fast & Free Online Tools">
+            ⚡ ابزارهای سریع و رایگان
+        </div>
+
+        <h1>
+            <span data-fa="ابزارهای کاربردی،" data-en="Useful Tools,">
+                ابزارهای کاربردی،
+            </span>
+
+            <span data-fa="همیشه در دسترس" data-en="Always Available">
+                همیشه در دسترس
+            </span>
+        </h1>
+
+        <p
+            data-fa="مجموعه‌ای از ابزارهای ساده، سریع و رایگان برای استفاده روزمره."
+            data-en="A collection of simple, fast and free tools for everyday use.">
+            مجموعه‌ای از ابزارهای ساده، سریع و رایگان برای استفاده روزمره.
+        </p>
+
+        <a href="#tools" class="hero-button">
+            <span data-fa="مشاهده ابزارها" data-en="Explore Tools">
+                مشاهده ابزارها
+            </span>
+            <span>↓</span>
+        </a>
+
+    </div>
+
+</section>
+
+
+<section id="tools" class="tools-section">
+
+    <div class="section-title">
+
+        <span>🧰</span>
+
+        <h2 data-fa="ابزارهای کاربردی" data-en="Useful Tools">
+            ابزارهای کاربردی
+        </h2>
+
+        <p data-fa="ابزار مورد نیازت رو انتخاب کن"
+           data-en="Choose the tool you need">
+            ابزار مورد نیازت رو انتخاب کن
+        </p>
+
+    </div>
+
+
+    <div class="tools-grid">
+
+
+        <div class="tool-card" onclick="openModal('qrModal')">
+            <div class="tool-icon">🔳</div>
+            <h3 data-fa="ساخت QR Code" data-en="QR Code Generator">
+                ساخت QR Code
+            </h3>
+            <p data-fa="تبدیل متن یا لینک به QR Code"
+               data-en="Convert text or links into QR codes">
+                تبدیل متن یا لینک به QR Code
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+
+        <div class="tool-card" onclick="openPasswordGenerator()">
+            <div class="tool-icon">🔐</div>
+            <h3 data-fa="رمزساز حرفه‌ای" data-en="Password Generator">
+                رمزساز حرفه‌ای
+            </h3>
+            <p data-fa="ساخت رمز عبور امن و تصادفی"
+               data-en="Generate strong random passwords">
+                ساخت رمز عبور امن و تصادفی
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+
+        <div class="tool-card" onclick="openModal('calculatorModal')">
+            <div class="tool-icon">🧮</div>
+            <h3 data-fa="ماشین حساب" data-en="Calculator">ماشین حساب</h3>
+            <p data-fa="محاسبات سریع و ساده"
+               data-en="Fast and simple calculations">
+                محاسبات سریع و ساده
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+
+        <div class="tool-card" onclick="openModal('textCounterModal')">
+            <div class="tool-icon">📝</div>
+            <h3 data-fa="شمارش متن" data-en="Text Counter">شمارش متن</h3>
+            <p data-fa="شمارش حروف، کلمات و خطوط"
+               data-en="Count characters, words and lines">
+                شمارش حروف، کلمات و خطوط
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+
+        <div class="tool-card" onclick="openModal('unitModal')">
+            <div class="tool-icon">🔄</div>
+            <h3 data-fa="تبدیل واحد" data-en="Unit Converter">تبدیل واحد</h3>
+            <p data-fa="تبدیل طول، وزن و دما"
+               data-en="Convert length, weight and temperature">
+                تبدیل طول، وزن و دما
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+
+        <div class="tool-card" onclick="openModal('colorModal')">
+            <div class="tool-icon">🎨</div>
+            <h3 data-fa="انتخاب رنگ" data-en="Color Picker">انتخاب رنگ</h3>
+            <p data-fa="انتخاب و تبدیل رنگ‌ها"
+               data-en="Pick and convert colors">
+                انتخاب و تبدیل رنگ‌ها
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+
+        <div class="tool-card" onclick="openModal('timerModal')">
+            <div class="tool-icon">⏱️</div>
+            <h3 data-fa="تایمر و کرنومتر" data-en="Timer & Stopwatch">
+                تایمر و کرنومتر
+            </h3>
+            <p data-fa="تایمر و کرنومتر آنلاین"
+               data-en="Online timer and stopwatch">
+                تایمر و کرنومتر آنلاین
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+
+        <div class="tool-card" onclick="openModal('textToolsModal')">
+            <div class="tool-icon">🔤</div>
+            <h3 data-fa="ابزار متن" data-en="Text Tools">ابزار متن</h3>
+            <p data-fa="تغییر و پاک‌سازی متن"
+               data-en="Transform and clean text">
+                تغییر و پاک‌سازی متن
+            </p>
+            <button data-fa="باز کردن" data-en="Open">باز کردن</button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="about" class="about">
+
+    <h2 data-fa="همه‌چیز ساده و سریع"
+        data-en="Everything Simple & Fast">
+        همه‌چیز ساده و سریع
+    </h2>
+
+    <p data-fa="ابزارک مجموعه‌ای از ابزارهای رایگان و کاربردی است که بدون نیاز به نصب نرم‌افزار می‌توانید از آن‌ها استفاده کنید."
+       data-en="Toolak is a collection of useful and free online tools that you can use without installing software.">
+        ابزارک مجموعه‌ای از ابزارهای رایگان و کاربردی است که بدون نیاز به نصب نرم‌افزار می‌توانید از آن‌ها استفاده کنید.
+    </p>
+
+</section>
+
+</main>
+
+
+<footer>
+    <p>
+        © 2026 ابزارک — ساخته شده توسط Erfan
+        کپی ازاد هست نیازی به اجازه گیری نیست
+    </p>
+</footer>
+
+
+<!-- QR -->
+
+<div class="tool-modal" id="qrModal">
+
+    <div class="tool-modal-box">
+
+        <button class="close-modal" onclick="closeModal('qrModal')">×</button>
+
+        <div class="modal-icon">🔳</div>
+
+        <h2 data-fa="ساخت QR Code" data-en="QR Code Generator">
+            ساخت QR Code
+        </h2>
+
+        <p class="modal-description"
+           data-fa="متن یا لینک خود را وارد کنید."
+           data-en="Enter your text or link.">
+            متن یا لینک خود را وارد کنید.
+        </p>
+
+        <div class="qr-layout">
+
+            <div class="qr-settings">
+
+                <label data-fa="متن یا لینک" data-en="Text or Link">
+                    متن یا لینک
+                </label>
+
+                <textarea id="qrText"
+                          placeholder="https://example.com"
+                          oninput="generateQR()"></textarea>
+
+                <label data-fa="رنگ QR" data-en="QR Color">
+                    رنگ QR
+                </label>
+
+                <input type="color"
+                       id="qrColor"
+                       value="#000000"
+                       onchange="generateQR()">
+
+                <label data-fa="اندازه" data-en="Size">
+                    اندازه
+                </label>
+
+                <select id="qrSize" onchange="generateQR()">
+                    <option value="180">180 × 180</option>
+                    <option value="240" selected>240 × 240</option>
+                    <option value="300">300 × 300</option>
+                    <option value="400">400 × 400</option>
+                </select>
+
+                <button class="generate-button"
+                        onclick="generateQR()"
+                        data-fa="ساخت QR Code"
+                        data-en="Generate QR Code">
+                    ساخت QR Code
+                </button>
+
+            </div>
+
+            <div class="qr-result">
+
+                <div id="qrcode">
+                    <span data-fa="QR Code اینجا نمایش داده می‌شود"
+                          data-en="QR Code will appear here">
+                        QR Code اینجا نمایش داده می‌شود
+                    </span>
+                </div>
+
+                <button id="downloadQR"
+                        class="download-button"
+                        onclick="downloadQR()"
+                        disabled
+                        data-fa="دانلود PNG"
+                        data-en="Download PNG">
+                    دانلود PNG
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- PASSWORD -->
+
+<div class="tool-modal" id="passwordModal">
+
+    <div class="tool-modal-box password-modal-box">
+
+        <button class="close-modal"
+                onclick="closePasswordGenerator()">
+            ×
+        </button>
+
+        <div class="modal-icon">🔐</div>
+
+        <h2 data-fa="رمزساز حرفه‌ای"
+            data-en="Professional Password Generator">
+            رمزساز حرفه‌ای
+        </h2>
+
+        <p class="modal-description"
+           data-fa="یک رمز عبور قدرتمند و تصادفی بساز."
+           data-en="Generate a strong random password.">
+            یک رمز عبور قدرتمند و تصادفی بساز.
+        </p>
+
+        <div class="password-generator">
+
+            <div class="password-output">
+
+                <input id="generatedPassword"
+                       type="text"
+                       readonly
+                       placeholder="رمز شما اینجا نمایش داده می‌شود">
+
+                <button class="copy-password"
+                        onclick="copyPassword()">
+                    📋
+                </button>
+
+            </div>
+
+            <div class="password-strength">
+
+                <div class="strength-header">
+                    <span data-fa="قدرت رمز" data-en="Password Strength">
+                        قدرت رمز
+                    </span>
+
+                    <strong id="strengthText">-</strong>
+                </div>
+
+                <div class="strength-bar">
+                    <div id="strengthProgress"></div>
+                </div>
+
+            </div>
+
+            <div class="password-options">
+
+                <div class="option-row">
+
+                    <label data-fa="طول رمز" data-en="Password Length">
+                        طول رمز
+                    </label>
+
+                    <div class="length-control">
+
+                        <input type="range"
+                               id="passwordLength"
+                               min="6"
+                               max="64"
+                               value="16"
+                               oninput="updatePasswordLength()">
+
+                        <span id="passwordLengthValue">16</span>
+
+                    </div>
+
+                </div>
+
+                <label class="check-option">
+                    <input type="checkbox"
+                           id="includeUppercase"
+                           checked>
+                    <span data-fa="حروف بزرگ (A-Z)"
+                          data-en="Uppercase letters (A-Z)">
+                        حروف بزرگ (A-Z)
+                    </span>
+                </label>
+
+                <label class="check-option">
+                    <input type="checkbox"
+                           id="includeLowercase"
+                           checked>
+                    <span data-fa="حروف کوچک (a-z)"
+                          data-en="Lowercase letters (a-z)">
+                        حروف کوچک (a-z)
+                    </span>
+                </label>
+
+                <label class="check-option">
+                    <input type="checkbox"
+                           id="includeNumbers"
+                           checked>
+                    <span data-fa="اعداد (0-9)"
+                          data-en="Numbers (0-9)">
+                        اعداد (0-9)
+                    </span>
+                </label>
+
+                <label class="check-option">
+                    <input type="checkbox"
+                           id="includeSymbols"
+                           checked>
+                    <span data-fa="نمادها (!@#$...)"
+                          data-en="Symbols (!@#$...)">
+                        نمادها (!@#$...)
+                    </span>
+                </label>
+
+            </div>
+
+            <button class="generate-password-button"
+                    onclick="generatePassword()"
+                    data-fa="🔄 ساخت رمز جدید"
+                    data-en="🔄 Generate Password">
+                🔄 ساخت رمز جدید
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CALCULATOR -->
+
+<div class="tool-modal" id="calculatorModal">
+
+    <div class="tool-modal-box">
+
+        <button class="close-modal"
+                onclick="closeModal('calculatorModal')">
+            ×
+        </button>
+
+        <div class="modal-icon">🧮</div>
+
+        <h2 data-fa="ماشین حساب"
+            data-en="Calculator">
+            ماشین حساب
+        </h2>
+
+        <div class="calculator">
+
+            <input id="calcDisplay"
+                   class="calc-display"
+                   readonly
+                   value="0">
+
+            <div class="calc-grid">
+
+                <button onclick="calcClear()">AC</button>
+                <button onclick="calcDelete()">⌫</button>
+                <button onclick="calcInput('%')">%</button>
+                <button onclick="calcInput('/')">÷</button>
+
+                <button onclick="calcInput('7')">7</button>
+                <button onclick="calcInput('8')">8</button>
+                <button onclick="calcInput('9')">9</button>
+                <button onclick="calcInput('*')">×</button>
+
+                <button onclick="calcInput('4')">4</button>
+                <button onclick="calcInput('5')">5</button>
+                <button onclick="calcInput('6')">6</button>
+                <button onclick="calcInput('-')">−</button>
+
+                <button onclick="calcInput('1')">1</button>
+                <button onclick="calcInput('2')">2</button>
+                <button onclick="calcInput('3')">3</button>
+                <button onclick="calcInput('+')">+</button>
+
+                <button onclick="calcInput('0')" class="zero">0</button>
+                <button onclick="calcInput('.')">.</button>
+                <button onclick="calcCalculate()">=</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TEXT COUNTER -->
+
+<div class="tool-modal" id="textCounterModal">
+
+    <div class="tool-modal-box">
+
+        <button class="close-modal"
+                onclick="closeModal('textCounterModal')">
+            ×
+        </button>
+
+        <div class="modal-icon">📝</div>
+
+        <h2 data-fa="شمارش متن"
+            data-en="Text Counter">
+            شمارش متن
+        </h2>
+
+        <textarea id="counterText"
+                  class="large-textarea"
+                  oninput="updateTextCounter()"
+                  placeholder="متن خود را وارد کنید..."></textarea>
+
+        <div class="stats-grid">
+
+            <div>
+                <strong id="charCount">0</strong>
+                <span data-fa="حرف" data-en="Characters">حرف</span>
+            </div>
+
+            <div>
+                <strong id="wordCount">0</strong>
+                <span data-fa="کلمه" data-en="Words">کلمه</span>
+            </div>
+
+            <div>
+                <strong id="lineCount">0</strong>
+                <span data-fa="خط" data-en="Lines">خط</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- UNIT CONVERTER -->
+
+<div class="tool-modal" id="unitModal">
+
+    <div class="tool-modal-box">
+
+        <button class="close-modal"
+                onclick="closeModal('unitModal')">
+            ×
+        </button>
+
+        <div class="modal-icon">🔄</div>
+
+        <h2 data-fa="تبدیل واحد"
+            data-en="Unit Converter">
+            تبدیل واحد
+        </h2>
+
+        <select id="unitType"
+                class="full-select"
+                onchange="convertUnit()">
+
+            <option value="length">طول / Length</option>
+            <option value="weight">وزن / Weight</option>
+            <option value="temperature">دما / Temperature</option>
+
+        </select>
+
+        <input id="unitInput"
+               class="tool-input"
+               type="number"
+               value="1"
+               oninput="convertUnit()">
+
+        <div class="unit-row">
+
+            <select id="unitFrom"
+                    onchange="convertUnit()">
+            </select>
+
+            <span>→</span>
+
+            <select id="unitTo"
+                    onchange="convertUnit()">
+            </select>
+
+        </div>
+
+        <div id="unitResult"
+             class="result-box">
+            0
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- COLOR -->
+
+<div class="tool-modal" id="colorModal">
+
+    <div class="tool-modal-box">
+
+        <button class="close-modal"
+                onclick="closeModal('colorModal')">
+            ×
+        </button>
+
+        <div class="modal-icon">🎨</div>
+
+        <h2 data-fa="انتخاب رنگ"
+            data-en="Color Picker">
+            انتخاب رنگ
+        </h2>
+
+        <input type="color"
+               id="mainColorPicker"
+               value="#8b5cf6"
+               oninput="updateColor()"
+               class="main-color-picker">
+
+        <div id="colorPreview"
+             class="color-preview">
+        </div>
+
+        <div class="color-values">
+
+            <div>
+                <span>HEX</span>
+                <strong id="hexValue">#8B5CF6</strong>
+            </div>
+
+            <div>
+                <span>RGB</span>
+                <strong id="rgbValue">139, 92, 246</strong>
+            </div>
+
+        </div>
+
+        <button class="generate-button"
+                onclick="copyColor()"
+                data-fa="📋 کپی رنگ"
+                data-en="📋 Copy Color">
+            📋 کپی رنگ
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- TIMER -->
+
+<div class="tool-modal" id="timerModal">
+
+    <div class="tool-modal-box">
+
+        <button class="close-modal"
+                onclick="closeModal('timerModal')">
+            ×
+        </button>
+
+        <div class="modal-icon">⏱️</div>
+
+        <h2 data-fa="تایمر و کرنومتر"
+            data-en="Timer & Stopwatch">
+            تایمر و کرنومتر
+        </h2>
+
+        <div class="timer-display"
+             id="timerDisplay">
+            00:00:00
+        </div>
+
+        <div class="timer-buttons">
+
+            <button onclick="startTimer()"
+                    data-fa="شروع"
+                    data-en="Start">
+                شروع
+            </button>
+
+            <button onclick="stopTimer()"
+                    data-fa="توقف"
+                    data-en="Stop">
+                توقف
+            </button>
+
+            <button onclick="resetTimer()"
+                    data-fa="بازنشانی"
+                    data-en="Reset">
+                بازنشانی
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TEXT TOOLS -->
+
+<div class="tool-modal" id="textToolsModal">
+
+    <div class="tool-modal-box">
+
+        <button class="close-modal"
+                onclick="closeModal('textToolsModal')">
+            ×
+        </button>
+
+        <div class="modal-icon">🔤</div>
+
+        <h2 data-fa="ابزار متن"
+            data-en="Text Tools">
+            ابزار متن
+        </h2>
+
+        <textarea id="textToolsInput"
+                  class="large-textarea"
+                  placeholder="متن خود را وارد کنید..."></textarea>
+
+        <div class="text-actions">
+
+            <button onclick="textUpper()"
+                    data-fa="حروف بزرگ"
+                    data-en="UPPERCASE">
+                حروف بزرگ
+            </button>
+
+            <button onclick="textLower()"
+                    data-fa="حروف کوچک"
+                    data-en="lowercase">
+                حروف کوچک
+            </button>
+
+            <button onclick="textClean()"
+                    data-fa="پاک‌سازی فاصله‌ها"
+                    data-en="Clean Spaces">
+                پاک‌سازی فاصله‌ها
+            </button>
+
+            <button onclick="textReverse()"
+                    data-fa="برعکس کردن"
+                    data-en="Reverse">
+                برعکس کردن
+            </button>
+
+            <button onclick="copyTextTools()"
+                    data-fa="کپی"
+                    data-en="Copy">
+                کپی
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
