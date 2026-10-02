@@ -1,0 +1,84 @@
+name: Build Rosemary Linux
+
+on:
+  push:
+    branches: [linux-rosemary-build]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout kernel
+        uses: actions/checkout@v4
+        with:
+          repository: LineageOS/android_kernel_xiaomi_mt6785
+          ref: lineage-23.2
+          fetch-depth: 1
+
+      - name: Install host tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc bison flex clang lld libssl-dev libelf-dev device-tree-compiler cpio python3 busybox-static xz-utils
+
+      - name: Configure
+        run: |
+          mkdir -p out
+          make O=out ARCH=arm64 LLVM=1 rosemary_defconfig
+
+      - name: Build kernel and DTBs
+        run: |
+          make -j2 O=out ARCH=arm64 LLVM=1 Image.gz dtbs
+          test -s out/arch/arm64/boot/Image.gz
+          test -n "$(find out/arch/arm64/boot/dts -type f -name 'rosemary*.dtb' | head -n1)"
+
+      - name: Build minimal initramfs
+        run: |
+          rm -rf initramfs
+          mkdir -p initramfs/{bin,dev,etc,proc,sys,tmp}
+          cp /bin/busybox initramfs/bin/busybox
+          ln -s busybox initramfs/bin/sh
+          ln -s busybox initramfs/bin/mount
+          ln -s busybox initramfs/bin/echo
+          ln -s busybox initramfs/bin/dmesg
+          cat > initramfs/init <<'EOF'
+          #!/bin/sh
+          mount -t proc none /proc
+          mount -t sysfs none /sys
+          mount -t devtmpfs none /dev 2>/dev/null || true
+          echo "Linux-on-Rosemary v0.1"
+          echo "Kernel booted successfully."
+          exec /bin/sh
+          EOF
+          chmod +x initramfs/init
+          cd initramfs
+          find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../out/ramdisk.cpio.gz
+
+      - name: Fetch mkbootimg
+        run: |
+          git clone --depth 1 --branch lineage-23.0 https://github.com/LineageOS/android_system_tools_mkbootimg.git mkbootimg
+
+      - name: Build boot.img
+        run: |
+          DTB="$(find out/arch/arm64/boot/dts -type f -name 'rosemary*.dtb' | head -n1)"
+          test -n "$DTB"
+          python3 mkbootimg/mkbootimg.py             --kernel out/arch/arm64/boot/Image.gz             --ramdisk out/ramdisk.cpio.gz             --dtb "$DTB"             --base 0x40078000             --pagesize 2048             --kernel_offset 0x00008000             --ramdisk_offset 0x07c08000             --second_offset 0xbff88000             --tags_offset 0x0bc08000             --dtb_offset 0x0bc08000             --header_version 2             --cmdline 'bootopt=64S3,32N2,64N2 androidboot.init_fatal_reboot_target=recovery androidboot.serialconsole=0'             --output out/boot.img
+          ls -lh out/boot.img
+
+      - name: Upload boot image
+        uses: actions/upload-artifact@v4
+        with:
+          name: rosemary-linux-v0.1
+          path: |
+            out/boot.img
+            out/arch/arm64/boot/Image.gz
+            out/ramdisk.cpio.gz
+            out/arch/arm64/boot/dts/**/rosemary*.dtb
+          if-no-files-found: error
